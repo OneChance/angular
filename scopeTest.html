@@ -1,0 +1,90 @@
+<html ng-app="myApp">
+<head>
+	<meta charset="utf-8">
+	<script src="angular.min.js"></script>
+	<script src="angular-route.min.js"></script>
+	<script type="text/javascript">
+		var app = angular.module('myApp', ['ngRoute']);
+
+		var gethublog = function($delegate,$log){
+			var events = function(path){
+				var events = $delegate.events(path);
+				events.finally(function(){
+					$log.info("获取数据"+new Date());
+				});
+				return events;		
+			};
+
+			return {
+				events:events
+			};
+		};
+
+		app.factory('myInterceptor', function($log){
+			var interceptor = {
+				'request':function(config){
+					$log.info("request interceptor");
+					return config;
+				},
+				'response':function(response){
+					$log.info("response interceptor");
+					return response
+				}
+			};
+			return interceptor;
+		})
+
+		app.config(function($provide,$httpProvider) {
+			$provide.decorator('githubService',gethublog);
+			$httpProvider.interceptors.push('myInterceptor');
+		});
+
+		
+		app.factory('githubService', function($http){
+
+			var githubUrl = "https://api.github.com";
+
+			var runUserRequest = function(username,path){
+				return $http({
+					method:'JSONP',
+					url:githubUrl+'/users/'+username+'/'+path+'?callback=JSON_CALLBACK'
+				});
+			};
+
+			return {
+				events:function(username){
+					return runUserRequest(username,'events');
+				}	
+			};
+		});
+
+		app.controller('GitHubController', function($scope,$timeout,githubService){
+			var timeout;
+			$scope.$watch('username',function(name){
+				if(name){
+					if(timeout){
+						$timeout.cancel(timeout);
+					}
+
+					timeout = $timeout(function(){
+						githubService.events(name).success(function(data,status,headers){
+							$scope.events = data.data;
+						});
+					},350);			
+				}
+			});
+		})
+		
+	</script>
+</head>
+<body>
+	<div ng-controller="GitHubController">
+		<input type="text" ng-model="username" placeholder="GitHub username"/>
+		<ul>
+			<li ng-repeat="event in events">
+				{{event.actor.login}} {{event.repo.name}}
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

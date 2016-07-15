@@ -1,0 +1,190 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="http://cdn.jsdelivr.net/foundation/4.3.2/css/foundation.min.css">
+	<script src="angular.min.js"></script>
+
+	<script type="text/javascript">
+		var app = angular.module('myApp', []);
+
+		/*
+		app.run(function($rootScope, $timeout) {     
+			$rootScope.isDisabled = true;     
+			$timeout(function() {         
+				$rootScope.isDisabled = false;     
+			}, 5000); 
+		});
+
+		app.run(function($rootScope, $timeout) {     
+			$timeout(function() {         
+				$rootScope.myHref = 'http://www.baidu.com';     
+			}, 2000); 
+		});
+
+		app.run(function($rootScope, $timeout) {     
+			$timeout(function() {         
+				$rootScope.imgSrc = 'file://C:\\Users\\ceeg\\Pictures\\1.jpg';     
+			}, 2000); 
+		});
+
+		app.controller('parentController',function($scope){
+
+			$scope.model = {
+				someValue:''
+			}
+
+			$scope.parentSetValue = function(){
+				$scope.model.someValue = 'parent';
+			};
+		}).controller('childController',function($scope){
+			$scope.childSetValue = function(){
+				$scope.model.someValue = 'child';
+			};
+		})
+
+		app.controller('peopleController',function($scope){
+			$scope.people = [{name:"tom",city:"San Franciso"},{name:"jerry",city:"Seattle"}];
+		})
+		
+
+		app.controller('FormController', function($scope){
+			$scope.fields = [{placeholder:'昵称',isRequired:true},{placeholder:'密码',isRequired:true},{placeholder:'邮箱(可选)',isRequired:false}];
+			$scope.submitForm = function(){
+				alert('提交成功');
+			};
+		});
+
+		app.controller('CityController', function($scope){
+				$scope.cities = [{name:'北京'},{name:'上海'},{name:'南京'}];
+		})
+
+		app.controller('FormController',function($scope){
+
+				$scope.people = [];
+
+				$scope.submit = function(){
+					if($scope.person.name){
+						$scope.people.push({name:$scope.person.name});
+						$scope.person.name = '';
+					}
+				};	
+		})*/
+
+	</script>
+
+	<style>
+	  	body {
+	  		background-color: #fff;
+		  border-top: 5px solid #3399cc;
+		}
+
+		html {
+		  background: #fff;
+		}
+
+		.row {
+		  border: 0px solid green;
+		}
+
+		input.ng-invalid {
+		  border: 1px solid red;
+		}
+
+		input.ng-valid {
+		  border: 1px solid green;
+		}
+
+		.odd{
+			background-color: blue;
+		}
+
+		.even{
+			background-color: red;
+		}
+  </style>
+</head>
+	<body>
+		<!--
+		<legend>输入激活按钮</legend>
+		<input type="text" ng-model="someProperty" placeholder="TypetoEnable">
+		<button ng-model="button" ng-disabled="!someProperty">AButton</button> 
+
+		<legend>五秒后可输入</legend>
+		<textarea ng-disabled="isDisabled">Wait5seconds</textarea>
+
+		<legend>第一个输入框填写后，第二个不可填</legend>
+		<input type="text" ng-model="someValue"><br/>
+		<input type="text" ng-readonly="someValue" value="Some text here"/> 
+			
+		<label>someProperty = {{someProperty}}</label> 
+		<input type="checkbox" ng-checked="someProperty" ng-init="someProperty=true" ng-model="someProperty">
+		
+
+		<label>Select Two Fish:</label>
+		<input type="checkbox" ng-model="isTwoFish">
+		<select>
+			<option ng-selected="isTwoFish">Two Fish</option>
+			<option ng-selected="!isTwoFish">One Fish</option>
+		</select>
+
+		<a ng-href="{{ myHref }}">I'm feeling 404</a>
+
+		<h1>WrongWay</h1><img src="{{imgSrc}}"/> 
+		<h1>Rightway</h1><img ng-src="{{imgSrc}}"/>  
+
+		<div ng-controller="parentController">
+			{{model.someValue}}
+			<button ng-click="parentSetValue()">parentSet</button>
+			<div ng-controller="childController">
+				{{model.someValue}}
+				<button ng-click="childSetValue()">childSet</button>			
+			</div>
+		</div>
+		
+
+		<input type="text" ng-model="person.name"/>
+		<div ng-switch on="person.name">
+			<p ng-switch-default>My name is</p>
+			<h1 ng-switch-when="tom">{{person.name}}</h1>
+		</div>	
+
+		<ul ng-controller="peopleController">
+			<li ng-repeat="person in people" ng-class="{even:!$even,odd:!$odd}">
+				{{person.name}} live in {{person.city}}
+			</li>
+		</ul> 
+
+		<form name="signup_form" ng-controller="FormController" ng-submit="submitForm()" novalidate>
+			<div ng-repeat="field in fields" ng-form="signup_form_input">
+				<input type="text" name="dynamic_input" ng-required="field.isRequired" ng-model="field.name" placeholder="{{field.placeholder}}">
+				<div ng-show="signup_form_input.dynamic_input.$dirty && signup_form_input.dynamic_input.$invalid">
+					<span class="error" ng-show="signup_form_input.dynamic_input.$error.required">
+						请输入
+					</span>
+				</div>
+			</div>
+
+			<button type="submit" ng-disabled="signup_form.$invalid">
+				全部提交
+			</button>
+		</form>
+
+		<div ng-controller="CityController">
+			<select ng-model="city" ng-options="city.name for city in cities">
+				<option value="">选择城市</option>
+			</select>
+			{{city.name}}
+		</div>
+
+		<form ng-submit="submit()" ng-controller="FormController">
+		<input type="text" ng-model="person.name"/>
+		<input type="submit" value="提交"/>
+		<code>perople={{people}}</code>
+			<ul ng-repeat="p in people">
+				<li>{{p.name}}</li>
+			</ul>
+		</form>-->
+	
+	</body>
+</html>

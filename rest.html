@@ -1,0 +1,162 @@
+<html ng-app="myApp">
+<head>
+	<meta charset="utf-8">
+	<script src="angular.min.js"></script>
+	<script src="angular-resource.min.js"></script>
+	<script src="restangular.js"></script>
+	<script src="lodash.js"></script>
+	<script src="angular-http-param.js"></script>
+	<script type="text/javascript">
+		var app = angular.module('myApp', ['ngResource','restangular'],paramAdd);
+
+		app.factory('UserService', function($resource,Restangular){
+
+			var Account = Restangular.allUrl('accountBase','http://localhost:8080/api/account');
+
+			return {
+				query:function(){
+					var accounts = Account.getList();
+					return accounts.$object;
+				},
+				save:function(account){
+					Account.post(account).then(function(){
+						alert('保存成功');
+					},function(error){
+						alert('保存失败');
+					});
+				},
+				remove:function(account){
+					Account.remove(account).then(function(){
+						alert('删除成功');
+					},function(error){
+						alert('删除失败');
+					});
+				},
+				updateFirst:function(account){
+					Account.customGET('',account).then(function(data){
+						var accountServer = data[0];
+						accountServer.name = 'tim';			
+						Account.customPUT('','',accountServer).then(function(){
+							alert('更新成功');
+						},function(){
+							alert('更新失败');
+						});			
+					});
+				}	
+			};
+
+			/*
+			return $resource('http://localhost:8080/api/account/', {}, {
+				query:{
+					method:'GET',
+					isArray:true
+				},
+				save:{
+					params:{name:'@name'},
+					method:'POST',
+					interceptor: {
+                      	response: function (response) {
+                        	alert('保存成功');
+                      	},
+                      	responseError: function (response) {
+                        	alert('保存失败');
+                      	}
+                  	}
+				},
+				remove:{
+					params:{id:'@id'},
+					method:'DELETE',
+					interceptor: {
+                      	response: function (response) {
+                        	alert('删除成功');
+                      	},
+                      	responseError: function (response) {
+                        	alert('删除失败');
+                      	}
+                  	}
+				}
+			});*/
+		});
+
+		app.controller('AccountController',function($scope,$resource,UserService){
+			//var User = $resource('http://localhost:8080/api/account/'); 
+			$scope.getAccounts = function(){
+
+				/*User.get(
+					{
+						//id: '1'
+					},
+					function(resp) {
+						
+					}, function(err) {
+						
+					}
+				)
+
+				User.query(function(accounts) {
+					$scope.accounts = accounts;
+				});*/
+
+				$scope.accounts = UserService.query();
+
+			}	
+
+			$scope.saveAccount = function(){
+				/*
+				User.save({name:'jerry'},{},function(responese){
+
+				},function(response){
+
+				});*/
+
+				var account = {
+					name:'jerry'
+				};
+				
+				UserService.save(account);
+			}
+
+			$scope.deleteAccount = function(){
+				/*
+				User.remove({id:'2'},{},function(responese){
+
+				},function(response){
+					alert('无此用户');
+				});*/
+				
+				var account = {
+					id:6
+				};
+
+				UserService.remove(account);
+			}
+
+			$scope.updateFirst = function(){
+
+				var account = {
+					id:1
+				};
+
+				UserService.updateFirst(account);
+			}
+		});
+
+	</script>
+</head>
+<body>
+	<div ng-controller="AccountController">
+		<button ng-click="getAccounts()">查询</button>
+		<button ng-click="saveAccount()">添加</button>
+		<button ng-click="deleteAccount()">删除</button>
+		<button ng-click="updateFirst()">更新第一个</button>
+		<br>
+
+		<ul>
+			
+			<li ng-repeat="account in accounts">
+				{{account.name}}
+			</li>
+		</ul>	
+	</div>
+</body>
+</html>
